@@ -77,6 +77,21 @@ const addBookHandler = (req, h) => {
 const getAllBooksHandler = (req, h) => {
   const { name, reading, finished } = req.query;
 
+  if (name) {
+    const index = books.findIndex((bk) => bk.name.toLowerCase() === name.toLowerCase());
+
+    if (index !== -1) {
+      const response = h.response({
+        status: 'success',
+        data: {
+          books: books[index],
+        },
+      });
+      response.code(200);
+      return response;
+    }
+  }
+
   if (reading) {
     if (reading === '1') {
       const bookResult = books.filter((bk) => bk.reading === true);
