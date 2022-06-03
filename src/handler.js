@@ -101,6 +101,30 @@ const getAllBooksHandler = (req, h) => {
     return response;
   }
 
+  if (finished) {
+    if (finished === '1') {
+      const bookResult = books.filter((bk) => bk.finished === true);
+      const response = h.response({
+        status: 'success',
+        data: {
+          books: bookResult,
+        },
+      });
+      response.code(200);
+      return response;
+    }
+
+    const bookResult = books.filter((bkr) => bkr.finished === false);
+    const response = h.response({
+      status: 'success',
+      data: {
+        books: bookResult,
+      },
+    });
+    response.code(200);
+    return response;
+  }
+
   return ({
     status: 'success',
     data: {
