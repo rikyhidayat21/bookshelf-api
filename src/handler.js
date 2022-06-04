@@ -32,8 +32,6 @@ const addBookHandler = (req, h) => {
     updatedAt,
   };
 
-  books.push(newBook);
-
   if (name === undefined) {
     const response = h.response({
       status: 'fail',
@@ -51,6 +49,8 @@ const addBookHandler = (req, h) => {
     response.code(400);
     return response;
   }
+
+  books.push(newBook);
 
   const isSuccess = books.filter((book) => book.id === id).length > 0;
 
@@ -79,11 +79,16 @@ const getAllBooksHandler = (req, h) => {
 
   if (name) {
     const searchedBook = books.filter((w) => w.name.toLowerCase().includes(name.toLowerCase()));
+    const result = searchedBook.map((s) => ({
+      id: s.id,
+      name: s.name,
+      publisher: s.publisher,
+    }));
 
     const response = h.response({
       status: 'success',
       data: {
-        books: searchedBook,
+        books: result,
       },
     });
     response.code(200);
@@ -93,10 +98,16 @@ const getAllBooksHandler = (req, h) => {
   if (reading) {
     if (reading === '1') {
       const bookResult = books.filter((bk) => bk.reading === true);
+      const result = bookResult.map((b) => ({
+        id: b.id,
+        name: b.name,
+        publisher: b.publisher,
+      }));
+
       const response = h.response({
         status: 'success',
         data: {
-          books: bookResult,
+          books: result,
         },
       });
       response.code(200);
@@ -104,10 +115,15 @@ const getAllBooksHandler = (req, h) => {
     }
 
     const bookResult = books.filter((bkr) => bkr.reading === false);
+    const result = bookResult.map((b) => ({
+      id: b.id,
+      name: b.name,
+      publisher: b.publisher,
+    }));
     const response = h.response({
       status: 'success',
       data: {
-        books: bookResult,
+        books: result,
       },
     });
     response.code(200);
@@ -117,10 +133,15 @@ const getAllBooksHandler = (req, h) => {
   if (finished) {
     if (finished === '1') {
       const bookResult = books.filter((bk) => bk.finished === true);
+      const result = bookResult.map((b) => ({
+        id: b.id,
+        name: b.name,
+        publisher: b.publisher,
+      }));
       const response = h.response({
         status: 'success',
         data: {
-          books: bookResult,
+          books: result,
         },
       });
       response.code(200);
@@ -128,20 +149,31 @@ const getAllBooksHandler = (req, h) => {
     }
 
     const bookResult = books.filter((bkr) => bkr.finished === false);
+    const result = bookResult.map((b) => ({
+      id: b.id,
+      name: b.name,
+      publisher: b.publisher,
+    }));
     const response = h.response({
       status: 'success',
       data: {
-        books: bookResult,
+        books: result,
       },
     });
     response.code(200);
     return response;
   }
 
+  const result = books.map((b) => ({
+    id: b.id,
+    name: b.name,
+    publisher: b.publisher,
+  }));
+
   return ({
     status: 'success',
     data: {
-      books,
+      books: result,
     },
   });
 };
